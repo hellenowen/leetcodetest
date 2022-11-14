@@ -760,3 +760,35 @@ int test_middle::test_45(std::vector<int>& nums) {
 	}
 	return result;
 }
+
+// 12ms 7.7mb
+// middle
+std::string test_middle::test_43(std::string num1, std::string num2) {
+	std::string result = "0";
+	if (num1 == "0" || num2 == "0") return result;
+	int temp = result.length();
+	int k = 1;
+	for (int i = num1.length() - 1; i >= 0; i--) {
+		while (result.length() < (num1.length() - 1 - i) + num2.length()) {
+			result = '0' + result;
+		}
+		for (int j = num2.length() - 1; j >= 0; j--) {
+			temp = (num1[i] - '0') * (num2[j] - '0') + (result[j] - '0');
+			result[j] = temp % 10 + '0';
+			k = 1;
+			while (temp / 10 > 0) {
+				if (j - k >= 0) {
+					result[j - k] = (result[j - k] - '0') + temp / 10 + '0';
+					temp = temp - 10 * (temp / 10);
+				}
+				else {
+					result = '0' + result;
+					--k;
+					continue;
+				}
+				++k;
+			}
+		}
+	}
+	return result;
+}

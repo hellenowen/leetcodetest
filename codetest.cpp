@@ -39,10 +39,6 @@ int test_42(std::vector<int>& height) {
 	return -1;
 }
 
-std::string test_43(std::string num1, std::string num2) {
-	return "";
-}
-
 int main() {
 	std::vector<int> a = { 0,0,0 };
 	for (auto& p : test_39(a, 0)) {

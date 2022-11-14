@@ -28,6 +28,7 @@ namespace test_middle {
 	int test_35(std::vector<int>& nums, int target);
 	void test_48(std::vector< std::vector<int>>& matrix);
 	int test_45(std::vector<int>& nums);
+	std::string test_43(std::string num1, std::string num2);
 }
 
 namespace test22 {
