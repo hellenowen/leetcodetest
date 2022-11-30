@@ -306,3 +306,27 @@ testlistnode::ListNode* testlistnode::test_25(ListNode* head, int k) {
 	}
 	return head;
 }
+
+// 8ms 11.2mb
+// improve time
+testlistnode::ListNode* testlistnode::test_83(ListNode* head) {
+	if (head == nullptr) {
+		return head;
+	}
+	int temp = head->val;
+	ListNode* l = head->next;
+	ListNode* tempn = head;
+	while (l != nullptr) {
+		if (l->val == temp) {
+			tempn->next = l->next;
+			l->next = nullptr;
+			l = tempn;
+		}
+		else {
+			temp = l->val;
+		}
+		tempn = l;
+		l = l->next;
+	}
+	return head;
+}

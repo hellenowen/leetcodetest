@@ -792,3 +792,216 @@ std::string test_middle::test_43(std::string num1, std::string num2) {
 	}
 	return result;
 }
+
+// 4ms 7.8mb
+// improve storage
+vector<vector<int>> test_middle::test_46(vector<int>& nums) {
+	vector<vector<int>> result;
+	vector<int> index;
+	for (int i = 1; i <= nums.size(); i++) {
+		index.push_back(i);
+	}
+	int m = -1;
+	int n = -1;
+	int changetemp = 0;
+	int k = 0;
+	int len = index.size();
+	while (true) {
+		vector<int> temp;
+		for (auto& d : index) {
+			temp.push_back(nums[d - 1]);
+		}
+		result.push_back(temp);
+		m = -1;
+		n = -1;
+		for (int j = 0; j < len - 1; j++) {
+			if (index[j] < index[j + 1]) {
+				m = j;
+				n = j + 1;
+				if (j + 2 < len && index[j + 1] > index[j + 2]) {
+					m = j;
+					n = -1;
+				}
+			}
+		}
+		if (m != -1 && n != -1) {
+			changetemp = index[m];
+			index[m] = index[n];
+			index[n] = changetemp;
+		}
+		else if (m != -1) {
+			k = len - 1;
+			while (index[k] < index[m]) {
+				--k;
+			}
+			changetemp = index[k];
+			index[k] = index[m];
+			index[m] = changetemp;
+			k = m + 1;
+			while (k <= (m + 1 + len - 1) / 2) {
+				changetemp = index[k];
+				index[k] = index[m + 1 + len - 1 - k];
+				index[m + 1 + len - 1 - k] = changetemp;
+				++k;
+			}
+		}
+		else {
+			break;
+		}
+	}
+	return result;
+}
+
+// 0ms 6.3mb
+// ~
+int test_middle::test_58(string s) {
+	int result = 0;
+	for (int i = 0; i < s.size() - 1; i++) {
+		if (s[i] == ' ' && s[i + 1] != ' ') {
+			result = 0;
+		}
+		else if (s[i] != ' ') {
+			++result;
+		}
+	}
+	if (s[s.size() - 1] != ' ') ++result;
+	return result;
+}
+
+// 0ms 8.4mb
+// ~
+vector<int> test_middle::test_66(vector<int>& digits) {
+	for (int i = digits.size() - 1; i >= 0; i--) {
+		if (digits[i] == 9) {
+			digits[i] = 0;
+		}
+		else {
+			++digits[i];
+			break;
+		}
+	}
+	if (digits[0] == 0) {
+		digits.insert(digits.begin(), 1);
+	}
+	return digits;
+}
+
+// 0ms 6.1mb
+// ~
+string test_middle::test_67(string a, string b) {
+	int i = a.size() - 1;
+	int j = b.size() - 1;
+	bool carry = false;
+	string result = "";
+	while (i >= 0 || j >= 0) {
+		if (i >= 0 && j >= 0) {
+			if (a[i] != b[j]) {
+				if (carry) {
+					result.insert(result.begin(), '0');
+				}
+				else {
+					result.insert(result.begin(), '1');
+					carry = false;
+				}
+			}
+			else {
+				if (carry) {
+					if (a[i] == '0') {
+						carry = false;
+					}
+					result.insert(result.begin(), '1');
+				}
+				else {
+					if (a[i] == '1') {
+						carry = true;
+					}
+					result.insert(result.begin(), '0');
+				}
+			}
+		}
+		else if (i >= 0) {
+			if (carry) {
+				if (a[i] == '0') {
+					result.insert(result.begin(), '1');
+					carry = false;
+				}
+				else {
+					result.insert(result.begin(), '0');
+				}
+			}
+			else {
+				result.insert(result.begin(), a[i]);
+			}
+		}
+		else if (j >= 0) {
+			if (carry) {
+				if (b[j] == '0') {
+					result.insert(result.begin(), '1');
+					carry = false;
+				}
+				else {
+					result.insert(result.begin(), '0');
+				}
+			}
+			else {
+				result.insert(result.begin(), b[j]);
+			}
+		}
+		--i;
+		--j;
+	}
+	if (carry) result.insert(result.begin(), '1');
+	return result;
+}
+
+// 56ms 5.8mb
+// improve time
+int test_middle::test_69(int x) {
+	long result = 1;
+	while (result <= x / result) {
+		++result;
+	}
+	return result - 1;
+}
+
+// 0ms 8.7mb
+// more clearly?
+void test_middle::test_88(vector<int>& nums1, int m, vector<int>& nums2, int n) {
+	int i = 0;
+	if (m == 0 || n == 0) {
+		for (auto& d : nums2) {
+			nums1[i] = d;
+			++i;
+		}
+		return;
+	}
+	i = m + n - 1;
+	while (i >= n) {
+		nums1[i] = nums1[i - n];
+		--i;
+	}
+	i = n;
+	int j = 0;
+	int k = 0;
+	while (k < m + n || j < n) {
+		if (k < m + n && j < n && i < m + n) {
+			if (nums1[i] >= nums2[j]) {
+				nums1[k] = nums2[j];
+				++j;
+			}
+			else {
+				nums1[k] = nums1[i];
+				++i;
+			}
+			++k;
+		}
+		else if (j < n) {
+			nums1[k] = nums2[j];
+			++k;
+			++j;
+		}
+		else {
+			return;
+		}
+	}
+}

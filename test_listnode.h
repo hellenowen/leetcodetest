@@ -15,4 +15,5 @@ namespace testlistnode {
 	ListNode* test_23(std::vector<ListNode*>& lists);
 	ListNode* test_24(ListNode* head);
 	ListNode* test_25(ListNode* head, int k);
+	ListNode* test_83(ListNode* head);
 }

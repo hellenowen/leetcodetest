@@ -448,3 +448,39 @@ std::vector<std::vector<int>> test_improve::test_18(std::vector<int>& nums, int 
 	}
 	return result;
 }
+
+// 1040ms 19.2mb
+// edge of timeout
+int test_improve::test_42(std::vector<int>& height) {
+	int result = 0;
+	int i = 0;
+	int j = 0;
+	int max = 0;
+	int len = height.size();
+	while (i < len - 1) {
+		j = i + 1;
+		max = i;
+		while (j < len) {
+			if (height[j] >= height[max]) {
+				for (int k = i + 1; k < j; k++) {
+					result += (height[max] - height[k]);
+				}
+				i = j;
+				break;
+			}
+			++j;
+			if (j == len) {
+				max = i + 1;
+				--j;
+				while (j > i) {
+					if (height[j] >= height[max]) {
+						max = j;
+					}
+					--j;
+				}
+				j = i + 1;
+			}
+		}
+	}
+	return result;
+}
