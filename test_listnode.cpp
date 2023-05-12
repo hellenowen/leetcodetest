@@ -1,8 +1,11 @@
 #include "test_listnode.h"
 
+using namespace testlistnode;
+using namespace std;
+
 // 20ms 69.4mb
 // middle
-testlistnode::ListNode* testlistnode::test_2(ListNode* l1, ListNode* l2) {
+ListNode* testlistnode::test_2(ListNode* l1, ListNode* l2) {
 	ListNode* h1 = l1;
 	ListNode* h2 = l2;
 	ListNode* result = new ListNode();
@@ -42,7 +45,7 @@ testlistnode::ListNode* testlistnode::test_2(ListNode* l1, ListNode* l2) {
 
 // 0ms 10.4mb
 // improve storage
-testlistnode::ListNode* testlistnode::test_19(ListNode* head, int n) {
+ListNode* testlistnode::test_19(ListNode* head, int n) {
 	ListNode* last = nullptr;
 	ListNode* cur = head;
 	size_t count = 0;
@@ -72,7 +75,7 @@ testlistnode::ListNode* testlistnode::test_19(ListNode* head, int n) {
 
 // 0ms 14.3mb
 // aha
-testlistnode::ListNode* testlistnode::test_21(ListNode* list1, ListNode* list2) {
+ListNode* testlistnode::test_21(ListNode* list1, ListNode* list2) {
 	ListNode* temp = nullptr;
 	ListNode* result = nullptr;
 	while (list1 != nullptr || list2 != nullptr) {
@@ -128,7 +131,7 @@ testlistnode::ListNode* testlistnode::test_21(ListNode* list1, ListNode* list2) 
 
 // 24ms 12.6mb
 // middle
-testlistnode::ListNode* testlistnode::test_23(std::vector<ListNode*>& lists) {
+ListNode* testlistnode::test_23(std::vector<ListNode*>& lists) {
 	if (lists.empty()) return nullptr;
 	ListNode* result = nullptr;
 	ListNode* cur = nullptr;
@@ -206,7 +209,7 @@ testlistnode::ListNode* testlistnode::test_23(std::vector<ListNode*>& lists) {
 
 // 0ms 7.2mb
 // ~
-testlistnode::ListNode* testlistnode::test_24(ListNode* head) {
+ListNode* testlistnode::test_24(ListNode* head) {
 	ListNode* cur = head;
 	ListNode* temp = nullptr;
 	if (cur != nullptr) {
@@ -238,7 +241,7 @@ testlistnode::ListNode* testlistnode::test_24(ListNode* head) {
 
 // 12ms 11.2mb
 // improve storage
-testlistnode::ListNode* testlistnode::test_25(ListNode* head, int k) {
+ListNode* testlistnode::test_25(ListNode* head, int k) {
 	ListNode* cur = head;
 	ListNode* temp = head;
 	ListNode* last = nullptr;
@@ -309,7 +312,7 @@ testlistnode::ListNode* testlistnode::test_25(ListNode* head, int k) {
 
 // 8ms 11.2mb
 // improve time
-testlistnode::ListNode* testlistnode::test_83(ListNode* head) {
+ListNode* testlistnode::test_83(ListNode* head) {
 	if (head == nullptr) {
 		return head;
 	}
@@ -329,4 +332,126 @@ testlistnode::ListNode* testlistnode::test_83(ListNode* head) {
 		l = l->next;
 	}
 	return head;
+}
+
+// 12ms 7.8mb
+// middle
+bool testlistnode::test_141(ListNode* head) {
+	if (head == nullptr) return false;
+	ListNode* one = head;
+	ListNode* two = head->next;
+	while (one != nullptr && two != nullptr) {
+		if (one == two) return true;
+		one = one->next;
+		two = two->next;
+		if (two != nullptr) two = two->next;
+	}
+	return false;
+}
+
+// 176ms 14.1mb
+// improve time
+ListNode* testlistnode::test_160(ListNode* headA, ListNode* headB) {
+	if (headA == nullptr || headB == nullptr) return nullptr;
+	if (headA == headB) return headA;
+	ListNode* a = headA;
+	ListNode* b = headB;
+	while (a->next != nullptr) {
+		a = a->next;
+	}
+	while (b->next != nullptr) {
+		b = b->next;
+	}
+	ListNode* tempa = nullptr;
+	ListNode* tempb = nullptr;
+	if (a == b) {	// intersection
+		a = headA;
+		b = headB;
+		while (!(a == b && (tempa != tempb || tempa == nullptr))) {
+			if (a == nullptr) {
+				tempa = nullptr;
+				a = headA;
+			}
+			else {
+				tempa = a;
+				a = a->next;
+			}
+			if (b == nullptr) {
+				tempb = nullptr;
+				b = headB;
+			}
+			else {
+				tempb = b;
+				b = b->next;
+			}
+		}
+		return a;
+	}
+	else return nullptr;
+}
+
+// 16ms 14.5mb
+// ~
+ListNode* testlistnode::test_203(ListNode* head, int val) {
+	ListNode* last = nullptr;
+	ListNode* cur = head;
+	while (cur != nullptr && cur->val == val) {
+		head = cur->next;
+		cur = head;
+	}
+	while (cur != nullptr) {
+		if (cur->val == val) {
+			last->next = cur->next;
+			cur->next = nullptr;
+			cur = last->next;
+		}
+		else {
+			last = cur;
+			cur = cur->next;
+		}
+	}
+	return head;
+}
+
+void test206::reverse(ListNode*& cur, ListNode* last) {
+	ListNode* temp = cur->next;
+	cur->next = last;
+	last = cur;
+	cur = temp;
+	if (cur != nullptr) reverse(cur, last);
+	else cur = last;
+}
+
+// 4ms 8mb
+// ~
+ListNode* test206::test_206(ListNode* head) {
+	if (head == nullptr) return nullptr;
+	reverse(head, nullptr);
+	return head;
+}
+
+// 184ms 117.8mb
+// middle
+bool testlistnode::test_234(ListNode* head) {
+	ListNode* temp = head;
+	int count = 0;
+	while (temp != nullptr) {
+		temp = temp->next;
+		++count;
+	}
+	stack<int> record;
+	temp = head;
+	int i = 1;
+	while (temp != nullptr) {
+		if (i <= count / 2) {
+			record.push(temp->val);
+		}
+		else if (count % 2 == 0 || i > count / 2 + 1) {
+			if (record.top() != temp->val) return false;
+			record.pop();
+		}
+		temp = temp->next;
+		++i;
+	}
+	return record.empty();
 }

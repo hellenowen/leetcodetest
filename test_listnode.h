@@ -1,5 +1,6 @@
 #pragma once
 #include <vector>
+#include <stack>
 
 namespace testlistnode {
 	struct ListNode {
@@ -16,4 +17,13 @@ namespace testlistnode {
 	ListNode* test_24(ListNode* head);
 	ListNode* test_25(ListNode* head, int k);
 	ListNode* test_83(ListNode* head);
+	bool test_141(ListNode* head);
+	ListNode* test_160(ListNode* headA, ListNode* headB);
+	ListNode* test_203(ListNode* head, int val);
+	bool test_234(ListNode* head);
+}
+
+namespace test206 {
+	void reverse(testlistnode::ListNode*& cur, testlistnode::ListNode* last);
+	testlistnode::ListNode* test_206(testlistnode::ListNode* head);
 }

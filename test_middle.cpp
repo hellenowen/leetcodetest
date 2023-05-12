@@ -1005,3 +1005,392 @@ void test_middle::test_88(vector<int>& nums1, int m, vector<int>& nums2, int n) 
 		}
 	}
 }
+
+// 0ms 6.2mb
+// ~
+vector<vector<int>> test_middle::test_118(int numRows) {
+	vector<vector<int>> result;
+	result.push_back({ 1 });
+	for (int i = 0; i < numRows - 1; i++) {
+		result.push_back({ 1 });
+		for (int j = 1; j < result[i].size(); j++) {
+			(result.end() - 1)->push_back(result[i][j - 1] + result[i][j]);
+		}
+		(result.end() - 1)->push_back(1);
+	}
+	return result;
+}
+
+// 0ms 6.1mb
+// ~
+vector<int> test_middle::test_119(int rowIndex) {
+	vector<int> result = { 1 };
+	for (int i = 1; i <= rowIndex; i++) {
+		for (int j = result.size() - 1; j > 0; j--) {
+			result[j] = result[j - 1] + result[j];
+		}
+		result.push_back(1);
+	}
+	return result;
+}
+
+// 0ms 7.2mb
+// more careful
+bool test_middle::test_125(string s) {
+	int front = 0;
+	int back = s.size() - 1;
+	while (front < back) {
+		if (((s[front] >= 'a' && s[front] <= 'z') || (s[front] >= 'A' && s[front] <= 'Z')) && ((s[back] >= 'a' && s[back] <= 'z') || (s[back] >= 'A' && s[back] <= 'Z')))
+		{
+			if (s[front] == s[back] || (abs(s[front] - s[back]) == abs('a' - 'A')))
+			{
+				++front;
+				--back;
+				continue;
+			}
+			else return false;
+		}
+		if ((s[front] >= '0' && s[front] <= '9') && (s[back] >= '0' && s[back] <= '9')) {
+			if (s[front] == s[back]) {
+				++front;
+				--back;
+				continue;
+			}
+			else return false;
+		}
+		if (((s[front] >= 'a' && s[front] <= 'z') || (s[front] >= 'A' && s[front] <= 'Z') || (s[front] >= '0' && s[front] <= '9')) && ((s[back] >= 'a' && s[back] <= 'z') || (s[back] >= 'A' && s[back] <= 'Z') || (s[back] >= '0' && s[back] <= '9'))) return false;
+		if ((s[front] < 'a' || s[front] > 'z') && (s[front] < 'A' || s[front] > 'Z') && (s[front] < '0' || s[front] > '9')) ++front;
+		if ((s[back] < 'a' || s[back] > 'z') && (s[back] < 'A' || s[back] > 'Z') && (s[back] < '0' || s[back] > '9')) --back;
+	}
+	return true;
+}
+
+// 0ms 5.9mb
+// change thinking
+int test_middle::test_70(int n) {
+	if (n == 1) return 1;
+	if (n == 2) return 2;
+	int a = 1;
+	int b = 2;
+	int temp = 0;
+	while (n >= 3) {
+		temp = b;
+		b = a + b;
+		a = temp;
+		--n;
+	}
+	return b;
+}
+
+// 644ms 16.5mb
+// improve time
+int test_middle::test_136(vector<int>& nums) {
+	int i = 0;
+	int j = 0;
+	while (i < nums.size()) {
+		j = i + 1;
+		while (j < nums.size()) {
+			if (nums[i] == nums[j]) {
+				nums[j] = nums[i + 1];
+				nums[i + 1] = nums[i];
+				break;
+			}
+			++j;
+		}
+		if (j == nums.size()) return nums[i];
+		i += 2;
+	}
+	return nums[nums.size() - 1];
+}
+
+// 0ms 6.1mb
+// improve storage
+string test_middle::test_168(int columnNumber) {
+	string result = "";
+	int i = 0;
+	int j = i;
+	int64_t up = 0;
+	int64_t down = 0;
+	while (true) {
+		j = i;
+		up = 0;
+		down = 0;
+		while (j >= 0) {
+			up += pow(26, j) * 26;
+			down += pow(26, j) * 1;
+			--j;
+		}
+		if (down <= columnNumber && columnNumber <= up) break;
+		++i;
+	}
+	while (i >= 0) {
+		j = 26;
+		while (pow(26, i) * j >= columnNumber) {
+			--j;
+		}
+		result += ('A' + (i == 0 ? j : j - 1));
+		columnNumber -= (pow(26, i) * j);
+		--i;
+	}
+	return result;
+}
+
+// 40ms 30.5mb
+// ??? another resolution?????????
+int test_middle::test_41(std::vector<int>& nums) {
+	sort(nums.begin(), nums.end());
+	int i = 0;
+	while (i < nums.size() && nums[i] <= 0) ++i;
+	if (i >= nums.size() || nums[i] > 1) return 1;
+	while (i < nums.size() - 1 && (nums[i] + 1 == nums[i + 1] || nums[i] == nums[i + 1])) ++i;
+	return nums[i] + 1;
+}
+
+// 0ms 5.8mb
+// ~
+uint32_t test_middle::test_190(uint32_t n) {
+	uint32_t temp = 0;
+	uint32_t front = pow(2, 31);
+	uint32_t back = 1;
+	for (int i = 0; i < 16; i++) {
+		if (((n & front) == 0 && (n & back) != 0) || ((n & front) != 0 && (n & back) == 0)) {
+			temp |= front;
+			temp |= back;
+		}
+		front >>= 1;
+		back <<= 1;
+	}
+	return n ^ temp;
+}
+
+// 0ms 6.4mb
+// improve storage
+bool test_middle::test_202(int n) {
+	int i = 0;
+	map<int, bool> record;
+	int temp = 0;
+	while (n != 1 && record.find(n) == record.end()) {
+		record.insert({ n,true });
+		i = 0;
+		temp = 0;
+		while (n / (long)pow(10, i) != 0) {
+			temp = temp + (int)pow(((n % (long)pow(10, i + 1)) / (long)pow(10, i)), 2);
+			++i;
+		}
+		n = temp;
+	}
+	return n == 1;
+}
+
+// 8ms 6.7mb
+// another resolution?
+bool test_middle::test_205(string s, string t) {
+	map<char, char> maprecord;
+	for (int i = 0; i < s.length(); i++) {
+		if (maprecord.find(s[i]) != maprecord.end()) {
+			if (maprecord[s[i]] != t[i]) return false;
+		}
+		else {
+			if (t.find(t[i]) != i) return false;
+			maprecord.insert({ s[i], t[i] });
+		}
+	}
+	return true;
+}
+
+// 80ms 45.4mb
+// just this?
+bool test_middle::test_217(vector<int>& nums) {
+	sort(nums.begin(), nums.end());
+	for (int i = 0; i < nums.size() - 1; i++) {
+		if (nums[i] == nums[i + 1]) return true;
+	}
+	return false;
+}
+
+// 144ms 75.4mb
+// improve storage
+bool test_middle::test_219(vector<int>& nums, int k) {
+	unordered_map<int, int> record;
+	for (int i = 0; i < nums.size(); i++) {
+		if (record.find(nums[i]) == record.end()) {
+			record.insert({ nums[i], i });
+		}
+		else {
+			if (abs(i - record[nums[i]]) <= k) return true;
+			else record[nums[i]] = i;
+		}
+	}
+	return false;
+}
+
+// 0ms 6.6mb
+// improve storage
+vector<string> test_middle::test_228(vector<int>& nums) {
+	vector<string> result;
+	string temp = "";
+	if (nums.size() > 0) {
+		temp += to_string(nums[0]);
+	}
+	for (int i = 1; i < nums.size(); i++) {
+		if (nums[i] > nums[i - 1] + 1) {
+			if (i - 2 >= 0 && nums[i - 1] == nums[i - 2] + 1) {
+				temp += "->";
+				temp += to_string(nums[i - 1]);
+			}
+			result.push_back(temp);
+			temp = "";
+			temp += to_string(nums[i]);
+		}
+	}
+	if (nums.size() >= 2 && nums[nums.size() - 1] == nums[nums.size() - 2] + 1) {
+		temp += "->";
+		temp += to_string(nums[nums.size() - 1]);
+	}
+	if (nums.size() > 0) {
+		result.push_back(temp);
+	}
+	return result;
+}
+
+// 0ms 5.7mb
+// en
+bool test_middle::test_231(int n) {
+	int count = 0;
+	uint32_t i = 1;
+	while (i > 0) {
+		if ((n & i) != 0) ++count;
+		i <<= 1;
+	}
+	return n >= 0 ? count == 1 : false;
+}
+
+// 8ms 7.2mb
+// improve storage/all
+bool test_middle::test_242(string s, string t) {
+	if (s.length() != t.length()) return false;
+	unordered_map<char, int> sr;
+	unordered_map<char, int> tr;
+	for (int i = 0; i < s.length(); i++) {
+		if (sr.find(s[i]) != sr.end()) {
+			sr[s[i]] += 1;
+		}
+		else {
+			sr.insert({ s[i], 1 });
+		}
+		if (tr.find(t[i]) != tr.end()) {
+			tr[t[i]] += 1;
+		}
+		else {
+			tr.insert({ t[i], 1 });
+		}
+	}
+	if (sr.size() != tr.size()) return false;
+	vector<char> removelist;
+	for (auto& p : sr) {
+		if (tr.find(p.first) == tr.end()) return false;
+		else if (tr[p.first] != p.second) return false;
+		removelist.push_back(p.first);
+	}
+	for (auto& c : removelist) {
+		sr.erase(c);
+		tr.erase(c);
+	}
+	return sr.empty() && tr.empty();
+}
+
+// 0ms 5.8mb
+// en
+bool test_middle::test_263(int n) {
+	if (n == 1) return true;
+	if (n <= 0) return false;
+	while (n % 2 == 0) {
+		n = n / 2;
+	}
+	while (n % 3 == 0) {
+		n = n / 3;
+	}
+	while (n % 5 == 0) {
+		n = n / 5;
+	}
+	return n == 1;
+}
+
+// reference
+int test_middle::test_121(vector<int>& prices) {
+	int min = 0;
+	int max = 0;
+	for (int i = 0; i < prices.size(); i++) {
+		if (prices[i] < prices[min]) {
+			min = i;
+		}
+		else if (prices[i] - prices[min] > max) {
+			max = prices[i] - prices[min];
+		}
+	}
+	return max;
+}
+
+// 20ms 17.4mb
+// middle
+int test_middle::test_268(vector<int> nums) {
+	sort(nums.begin(), nums.end());
+	for (int i = 0; i < nums.size(); i++) {
+		if (nums[i] != i) return i;
+	}
+	return nums[nums.size() - 1] + 1;
+}
+
+// a special function
+bool isBadVersion(int version) {
+	return false;
+}
+
+// 0ms 5.8mb
+// improve storage
+int test_middle::test_278(int n) {
+	int front = 0;
+	int back = n;
+	int middle = n / 2;
+	while (front < back) {
+		if (isBadVersion(front)) return front;
+		if (isBadVersion(middle)) {
+			back = middle;
+		}
+		else {
+			front = middle + 1;
+		}
+		middle = front / 2 + back / 2;
+	}
+	return isBadVersion(front) ? front : back;
+}
+
+// 20ms 18.8mb
+// improve storage
+void test_middle::test_283(vector<int>& nums) {
+	int i = 0;
+	int j = 0;
+	int temp = 0;
+	while (i < nums.size() && j < nums.size()) {
+		if (nums[i] == 0 && nums[j] != 0) {
+			if (i < j) {
+				temp = nums[i];
+				nums[i] = nums[j];
+				nums[j] = temp;
+				++i;
+				++j;
+			}
+			else {
+				++j;
+			}
+		}
+		else {
+			if (nums[i] != 0) {
+				++i;
+			}
+			if (nums[j] == 0) {
+				++j;
+			}
+		}
+	}
+}
